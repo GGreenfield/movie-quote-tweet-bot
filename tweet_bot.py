@@ -2,13 +2,9 @@
 from twython import Twython
 from bs4 import BeautifulSoup
 import urllib2, random, sys, re
+from keys import *
 
 def sendTweet(tweetStr):
-	apiKey = 'your_key_here'
-	apiSecret = 'your_key_here'
-	accessToken = 'your_key_here'
-	accessTokenSecret = 'your_key_here'
-
 	api = Twython(apiKey,apiSecret,accessToken,accessTokenSecret)
 	
 	api.update_status(status=tweetStr)
@@ -27,29 +23,8 @@ def getQuote():
 	
 	return "\"" + quote + "\" - " + character
 
-def saveTweet(tweetStr):
-	file = open("bot_tweets.txt", "a")
-	file.write(tweetStr + "\n")
-	file.close()
-
-def checkTweets(tweetStr, file_name):
-	file = open(file_name, "r")
-	file_contents = file.readlines()
-	file.close()
-	
-	tweeted = False
-
-	if tweetStr in file_contents:
-		tweeted = True
-	return tweeted
 
 #main
 tweet = getQuote()
-saveTweet(tweet)
-tweeted = checkTweets(tweet, "bot_tweets.txt")
-
-while tweeted:
-	tweet = getQuote()
-	tweeted = checkTweets(tweet, "bot_tweets.txt")
 sendTweet(tweet)		
 
